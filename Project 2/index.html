@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photographer Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Freight+Display+Pro&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-content">
+      <div class="nav-name">Photographer's Name</div>
+      <div class="nav-menu">
+        <span class="hamburger-icon" onclick="openPopup()">&#9776;</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Popup Modal -->
+  <div class="popup-modal" id="popupModal">
+    <div class="modal-content">
+      <span class="close-icon" onclick="closePopup()">&#10005;</span> <!-- Moved inside modal-content -->
+      <a href="#home" onclick="closePopup()">Home</a>
+      <a href="#gallery" onclick="closePopup()">Gallery</a>
+      <a href="#contact" onclick="closePopup()">Contact</a>
+      <a href="#admin" onclick="closePopup()">Admin</a>
+    </div>
+  </div>
+
+  <script>
+    function openPopup() {
+      document.getElementById("popupModal").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popupModal").style.display = "none";
+    }
+  </script>
+</body>
+</html>
