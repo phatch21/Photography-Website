@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photographer Portfolio</title>
+  <!-- Favicon-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Freight+Display+Pro&display=swap" rel="stylesheet">
+</head>
+<body onload="FirstImage()">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-content">
+      <div class="nav-name">Corinne Hatch Photography</div>
+      <div class="nav-menu">
+        <span class="hamburger-icon" onclick="openPopup()">&#9776;</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Popup Modal -->
+  <div class="popup-modal" id="popupModal">
+    <div class="modal-content">
+      <span class="close-icon" onclick="closePopup()">&#10005;</span>
+      <a href="#home" onclick="closePopup()">Home</a>
+      <a href="#gallery" onclick="closePopup()">Gallery</a>
+      <a href="#contact" onclick="closePopup()">Contact</a>
+      <a href="#admin" onclick="closePopup()">Admin</a>
+    </div>
+  </div>
+
+  <!-- Banner Section -->
+  <div class="banner" onclick="nextSlide()">
+    <img id="bannerImage" src="photo1.jpg" alt="Photography Banner">
+  </div>
+
+  <!-- About Section -->
+  <section class="about">
+    <h2>About Me</h2>
+    <p>Welcome! I'm Corinne Hatch, a passionate photographer looking to hone her skills. Here, you'll find my favorite captures that highlight the beauty I see through the lens. </p>
+  </section>
+
+  <!-- Footer Wrapper for Admin Login Button at the Bottom of the Page -->
+  <div class="footer-wrapper">
+    <button class="admin-login-button" onclick="openAdminLoginPopup()">Admin Login</button>
+  </div>
+
+  <!-- Admin Login Popup Modal -->
+  <div class="admin-login-popup-modal" id="adminLoginPopupModal">
+    <div class="admin-login-modal-content">
+      <span class="close-admin-login-icon" onclick="closeAdminLoginPopup()">&#10005;</span>
+      <h2 style="font-family: 'Freight Display Pro', serif;">Admin Login</h2>
+      <form>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+  <!-- Footer Section -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="social-icons">
+        <a href="https://www.instagram.com" target="_blank" class="icon instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.twitter.com" target="_blank" class="icon twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a href="https://www.linkedin.com" target="_blank" class="icon linkedin">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </div>
+      <a href="#contact" class="contact-button">Contact Me</a>
+      <p>&copy; 2024 Photographer's Name. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+
+  <script>
+    // Popup functions
+    function openPopup() {
+      document.getElementById("popupModal").style.display = "flex";
+    }
+    function closePopup() {
+      document.getElementById("popupModal").style.display = "none";
+    }
+
+    function openAdminLoginPopup() {
+      document.getElementById("adminLoginPopupModal").style.display = "flex";
+    }
+    function closeAdminLoginPopup() {
+      document.getElementById("adminLoginPopupModal").style.display = "none";
+    }
+
+    // Banner Slideshow
+    
+    let currentSlide = 0;
+    const images = ["/temple.jpeg", "/snail.jpeg", "/smile.jpeg", "/eye.jpeg", "/mountain.jpeg"];
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % images.length;
+      document.getElementById("bannerImage").src = images[currentSlide];
+    }
+
+    function FirstImage(){
+      document.getElementById("bannerImage").src = images[0];
+    }
+    
+    setInterval(nextSlide, 3000); // Change image every 3 seconds
+  </script>
+</body>
+</html>
