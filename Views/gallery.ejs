@@ -116,6 +116,13 @@
       cursor: pointer;
     }
 
+    .gallery-title {
+      text-align: center;
+      font-size: 2rem;
+      margin: 40px 0 10px;
+      font-weight: bold;
+    }
+
   </style>
 </head>
 <body>
@@ -130,6 +137,9 @@
     </div>
   </nav>
 
+  <div class="gallery-title">Photo Gallery</div>
+  <hr>
+  
   <!-- Dropdown for Photo Categories -->
   <div class="dropdown">
     <label for="photo-category">Select Photo Category:</label>
@@ -146,25 +156,25 @@
     <div class="photo-container" data-category="portrait">
       <img src="/blur.jpeg" alt="Blur Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/blur.jpeg')">
     </div>
-    <div class="photo-container" data-category="landscape">
+    <div class="photo-container" data-category="nature">
       <img src="/closeelephant.jpeg" alt="Close Elephant Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/closeelephant.jpeg')">
     </div>
-    <div class="photo-container" data-category="nature">
+    <div class="photo-container" data-category="landscape">
       <img src="/dock.jpeg" alt="Dock Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/dock.jpeg')">
     </div>
-    <div class="photo-container" data-category="portrait">
+    <div class="photo-container" data-category="elephant">
       <img src="/elephant.jpeg" alt="Elephant Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/elephant.jpeg')">
     </div>
-    <div class="photo-container" data-category="portrait">
+    <div class="photo-container" data-category="nature">
       <img src="/eye.jpeg" alt="Eye Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/eye.jpeg')">
     </div>
-    <div class="photo-container" data-category="nature">
+    <div class="photo-container" data-category="landscape">
       <img src="/flytrap.jpeg" alt="Flytrap Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/flytrap.jpeg')">
     </div>
     <div class="photo-container" data-category="portrait">
       <img src="/girlflower.jpeg" alt="Girl Flower Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/girlflower.jpeg')">
     </div>
-    <div class="photo-container" data-category="portrait">
+    <div class="photo-container" data-category="landscape">
       <img src="/girlsmile.jpeg" alt="Girl Smile Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/girlsmile.jpeg')">
     </div>
     <div class="photo-container" data-category="architectural">
@@ -173,13 +183,13 @@
     <div class="photo-container" data-category="portrait">
       <img src="/laugh.jpeg" alt="Laugh Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/laugh.jpeg')">
     </div>
-    <div class="photo-container" data-category="portrait">
+    <div class="photo-container" data-category="landscape">
       <img src="/littleboy.jpeg" alt="Little Boy Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/littleboy.jpeg')">
     </div>
     <div class="photo-container" data-category="nature">
       <img src="/monkey.jpeg" alt="Monkey Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/monkey.jpeg')">
     </div>
-    <div class="photo-container" data-category="nature">
+    <div class="photo-container" data-category="landscape">
       <img src="/mountain.jpeg" alt="Mountain Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/mountain.jpeg')">
     </div>
     <div class="photo-container" data-category="nature">
@@ -188,7 +198,7 @@
     <div class="photo-container" data-category="landscape">
       <img src="/reflection.jpeg" alt="Reflection Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/reflection.jpeg')">
     </div>
-    <div class="photo-container" data-category="nature">
+    <div class="photo-container" data-category="landscape">
       <img src="/sky.jpeg" alt="Sky Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/sky.jpeg')">
     </div>
     <div class="photo-container" data-category="portrait">
@@ -197,7 +207,7 @@
     <div class="photo-container" data-category="nature">
       <img src="/snail.jpeg" alt="Snail Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/snail.jpeg')">
     </div>
-    <div class="photo-container" data-category="architectural">
+    <div class="photo-container" data-category="landscape">
       <img src="/temple.jpeg" alt="Temple Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/temple.jpeg')">
     </div>
   </section>
@@ -223,19 +233,29 @@
     }
 
     // Filter Gallery Based on Category
-    document.getElementById("photo-category").addEventListener("change", function() {
-      const selectedCategory = this.value;
-      const photos = document.querySelectorAll('.photo-container');
-      photos.forEach(photo => {
-        if (photo.getAttribute('data-category') === selectedCategory || selectedCategory === "") {
-          photo.style.display = "block";
-        } else {
-          photo.style.display = "none";
-        }
-      });
-    });
+// Function to apply the filter
+function applyFilter() {
+  const selectedCategory = document.getElementById("photo-category").value;
+  const photos = document.querySelectorAll('.photo-container');
+  photos.forEach(photo => {
+    if (photo.getAttribute('data-category') === selectedCategory || selectedCategory === "") {
+      photo.style.display = "block";
+    } else {
+      photo.style.display = "none";
+    }
+  });
+}
+
+// Event listener for change on the dropdown
+document.getElementById("photo-category").addEventListener("change", applyFilter);
+
+// Apply the filter on page load
+window.onload = function() {
+  applyFilter();  // Apply the filter immediately when the page loads
+};
+
   </script>
 
 </body>
-</html
+</html>
 
