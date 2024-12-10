@@ -325,3 +325,131 @@ body {
 .contact-button:hover {
   background-color: #777;
 }
+/* TABLE CSS START */
+table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  font-size: 14px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+ 
+th, td {
+  border: 1px solid #ccc; /* Soft light border */
+  padding: 10px;
+  text-align: center;
+  line-height: 1.4;
+}
+ 
+th {
+  background-color: #dcdcdc; /* Soft gray header */
+  color: #333;
+  font-weight: bold;
+}
+ 
+td {
+  color: #333;
+}
+ 
+/* Button Styling */
+button {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: #1c8e00; /* Green color from original styles.css */
+  color: white;
+  transition: background-color 0.3s ease;
+}
+ 
+button:hover {
+  background-color: #156b00; /* Darker green for hover */
+}
+ 
+button:focus {
+  outline: none;
+}
+ 
+/* Responsive Styling */
+@media (max-width: 768px) {
+  table {
+    width: 100%;
+  }
+ 
+  th, td {
+    font-size: 12px;
+    padding: 8px;
+  }
+ 
+  button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+ 
+@media (max-width: 480px) {
+  th, td {
+    font-size: 10px;
+    padding: 6px;
+  }
+ 
+  button {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}
+ 
+/* Mobile Responsiveness */
+@media screen and (max-width: 768px) {
+  .sponsor-card {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .bottom-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+ 
+@media screen and (max-width: 480px) {
+  .sponsor-card {
+    grid-template-columns: 1fr;
+  }
+  .bottom-row {
+    grid-template-columns: 1fr;
+  }
+}
+ 
+/* TABLE CSS END*/
+ 
+ 
+/* Form Styling */
+.form-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #f4f4f4;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+ 
+.form-container h1 {
+  text-align: center;
+  color: #333;
+}
+ 
+label {
+  font-weight: bold;
+  margin-top: 1rem;
+  display: block;
+}
+ 
+input[type="text"],
+input[type="email"],
+input[type="number"] {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
