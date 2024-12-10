@@ -141,76 +141,43 @@
   <hr>
   
   <!-- Dropdown for Photo Categories -->
-  <div class="dropdown">
-    <label for="photo-category">Select Photo Category:</label>
-    <select id="photo-category">
-      <option value="portrait">Portrait</option>
-      <option value="landscape">Landscape</option>
-      <option value="nature">Nature</option>
-      <option value="architectural">Architectural</option>
-    </select>
-  </div>
+    <div class="dropdown">
+        <label for="photo-category">Select Category:</label>
+        <select id="photo-category">
+            <option value="all">All Categories</option>
+        <% categories.forEach(category => { %>
+            <option value="<%= category.categoryID %>"><%= category.catName %></option>
+        <% }) %>
+        </select>
+    </div>
+
+  <!-- Dropdown for Albums -->
+    <div class="dropdown">
+        <label for="photo-album">Select Album:</label>
+        <select id="photo-album">
+            <option value="all">All Albums</option>
+        <% albums.forEach(album => { %>
+            <option value="<%= album.albumID %>"><%= album.albumName %></option>
+        <% }) %>
+        </select>
+    </div>
 
   <!-- Gallery Section -->
-  <section class="gallery">
-    <div class="photo-container" data-category="portrait">
-      <img src="/blur.jpeg" alt="Blur Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/blur.jpeg')">
-    </div>
-    <div class="photo-container" data-category="nature">
-      <img src="/closeelephant.jpeg" alt="Close Elephant Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/closeelephant.jpeg')">
-    </div>
-    <div class="photo-container" data-category="landscape">
-      <img src="/dock.jpeg" alt="Dock Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/dock.jpeg')">
-    </div>
-    <div class="photo-container" data-category="elephant">
-      <img src="/elephant.jpeg" alt="Elephant Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/elephant.jpeg')">
-    </div>
-    <div class="photo-container" data-category="nature">
-      <img src="/eye.jpeg" alt="Eye Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/eye.jpeg')">
-    </div>
-    <div class="photo-container" data-category="landscape">
-      <img src="/flytrap.jpeg" alt="Flytrap Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/flytrap.jpeg')">
-    </div>
-    <div class="photo-container" data-category="portrait">
-      <img src="/girlflower.jpeg" alt="Girl Flower Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/girlflower.jpeg')">
-    </div>
-    <div class="photo-container" data-category="landscape">
-      <img src="/girlsmile.jpeg" alt="Girl Smile Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/girlsmile.jpeg')">
-    </div>
-    <div class="photo-container" data-category="architectural">
-      <img src="/lamp.jpeg" alt="Lamp Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/lamp.jpeg')">
-    </div>
-    <div class="photo-container" data-category="portrait">
-      <img src="/laugh.jpeg" alt="Laugh Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/laugh.jpeg')">
-    </div>
-    <div class="photo-container" data-category="landscape">
-      <img src="/littleboy.jpeg" alt="Little Boy Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/littleboy.jpeg')">
-    </div>
-    <div class="photo-container" data-category="nature">
-      <img src="/monkey.jpeg" alt="Monkey Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/monkey.jpeg')">
-    </div>
-    <div class="photo-container" data-category="landscape">
-      <img src="/mountain.jpeg" alt="Mountain Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/mountain.jpeg')">
-    </div>
-    <div class="photo-container" data-category="nature">
-      <img src="/purpflower.jpeg" alt="Purple Flower Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/purpflower.jpeg')">
-    </div>
-    <div class="photo-container" data-category="landscape">
-      <img src="/reflection.jpeg" alt="Reflection Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/reflection.jpeg')">
-    </div>
-    <div class="photo-container" data-category="landscape">
-      <img src="/sky.jpeg" alt="Sky Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/sky.jpeg')">
-    </div>
-    <div class="photo-container" data-category="portrait">
-      <img src="/smile.jpeg" alt="Smile Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/smile.jpeg')">
-    </div>
-    <div class="photo-container" data-category="nature">
-      <img src="/snail.jpeg" alt="Snail Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/snail.jpeg')">
-    </div>
-    <div class="photo-container" data-category="landscape">
-      <img src="/temple.jpeg" alt="Temple Image" onclick="openPhoto('/Users/spencerbullock/Downloads/403Project-main/Public/temple.jpeg')">
-    </div>
-  </section>
+<!-- Updated EJS Template -->
+    <section class="gallery">
+        <% if (photos.length > 0) { %>
+        <% photos.forEach(photo => { %>
+            <div class="photo-container" data-category="<%= photo.categoryID %>" data-album="<%= photo.albumID %>">
+            <img src="<%= photo.filePath %>" alt="<%= photo.fileDescription || 'Image' %>" 
+                onclick="openPhoto('<%= photo.filePath %>')">
+            </div>
+        <% }) %>
+        <% } else { %>
+        <p>No photos found.</p>
+        <% } %>
+    </section>
+  
+  
 
   <!-- Popup Modal for Image -->
   <div class="popup-modal" id="popupModal">
@@ -221,41 +188,47 @@
   <script>
     // Open Photo Popup
     function openPhoto(imagePath) {
-      const popupModal = document.getElementById('popupModal');
-      const popupImage = document.getElementById('popupImage');
-      popupModal.style.display = 'flex';
-      popupImage.src = imagePath;
+    const popupModal = document.getElementById("popupModal");
+    const popupImage = document.getElementById("popupImage");
+    popupModal.style.display = "flex";
+    popupImage.src = imagePath;
     }
 
     // Close Photo Popup
     function closePopup() {
-      document.getElementById('popupModal').style.display = 'none';
+    document.getElementById("popupModal").style.display = "none";
     }
 
-    // Filter Gallery Based on Category
-// Function to apply the filter
-function applyFilter() {
-  const selectedCategory = document.getElementById("photo-category").value;
-  const photos = document.querySelectorAll('.photo-container');
-  photos.forEach(photo => {
-    if (photo.getAttribute('data-category') === selectedCategory || selectedCategory === "") {
-      photo.style.display = "block";
-    } else {
-      photo.style.display = "none";
+    // Filter Gallery Based on Album and Category
+    function applyFilter() {
+        const selectedCategory = document.getElementById("photo-category").value;
+        const selectedAlbum = document.getElementById("photo-album").value;
+
+        const photos = document.querySelectorAll(".photo-container");
+
+        photos.forEach((photo) => {
+            const photoCategory = photo.getAttribute("data-category");
+            const photoAlbum = photo.getAttribute("data-album");
+
+            // Check if filters match or if "all" is selected
+            const matchesCategory = selectedCategory === "all" || selectedCategory === photoCategory;
+            const matchesAlbum = selectedAlbum === "all" || selectedAlbum === photoAlbum;
+
+            if (matchesCategory && matchesAlbum) {
+            photo.style.display = "block";
+            } else {
+            photo.style.display = "none";
+            }
+        });
     }
-  });
-}
 
-// Event listener for change on the dropdown
-document.getElementById("photo-category").addEventListener("change", applyFilter);
+    // Event listeners for dropdowns
+    document.getElementById("photo-category").addEventListener("change", applyFilter);
+    document.getElementById("photo-album").addEventListener("change", applyFilter);
 
-// Apply the filter on page load
-window.onload = function() {
-  applyFilter();  // Apply the filter immediately when the page loads
-};
-
-  </script>
+    // Apply filter on page load
+    window.onload = applyFilter;
+    </script>
 
 </body>
 </html>
-

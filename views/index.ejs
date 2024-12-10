@@ -48,10 +48,10 @@
   <div class="popup-modal" id="popupModal">
     <div class="modal-content">
       <span class="close-icon" onclick="closePopup()">&#10005;</span>
-      <a href="#home" onclick="closePopup()">Home</a>
-      <a href="#gallery" onclick="closePopup()">Gallery</a>
+      <a href="/" onclick="closePopup()">Home</a>
+      <a href="/gallery" onclick="closePopup()">Gallery</a>
       <a href="#contact" onclick="closePopup()">Contact</a>
-      <a href="#admin" onclick="closePopup()">Admin</a>
+      <a href="/admin" onclick="closePopup()">Admin</a>
     </div>
   </div>
 
@@ -68,23 +68,16 @@
 
   <!-- Footer Wrapper for Admin Login Button at the Bottom of the Page -->
   <div class="footer-wrapper">
-    <button class="admin-login-button" onclick="openAdminLoginPopup()">Admin Login</button>
+    <a class="admin-login-button" href="/login">Admin Login</a>
   </div>
 
   <!-- Admin Login Popup Modal -->
-  <div class="admin-login-popup-modal" id="adminLoginPopupModal">
+  <!-- <div class="admin-login-popup-modal" id="adminLoginPopupModal">
     <div class="admin-login-modal-content">
       <span class="close-admin-login-icon" onclick="closeAdminLoginPopup()">&#10005;</span>
-      <h2 style="font-family: 'Freight Display Pro', serif;">Admin Login</h2>
-      <form>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required>
-        <button type="submit">Submit</button>
-      </form>
+      <h2 style="font-family: 'Freight Display Pro', serif;" href="/login">Admin Login</h2>
     </div>
-  </div>
+  </div> -->
   <!-- Footer Section -->
   <footer class="footer">
     <div class="footer-content">
@@ -114,12 +107,12 @@
       document.getElementById("popupModal").style.display = "none";
     }
 
-    function openAdminLoginPopup() {
-      document.getElementById("adminLoginPopupModal").style.display = "flex";
-    }
-    function closeAdminLoginPopup() {
-      document.getElementById("adminLoginPopupModal").style.display = "none";
-    }
+    // function openAdminLoginPopup() {
+    //   document.getElementById("adminLoginPopupModal").style.display = "flex";
+    // }
+    // function closeAdminLoginPopup() {
+    //   document.getElementById("adminLoginPopupModal").style.display = "none";
+    // }
 
     // Banner Slideshow
     

@@ -1,14 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <p>Under construction</p>
-    <form action="/maintainAdmin" method="GET" style="display:inline;">
-        <button type="submit">Manage Admin</button>
-    </form>
+
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="nav-content">
+      <div class="nav-name">Corinne Hatch Photography</div>
+      <div class="nav-menu">
+        <span class="hamburger-icon" onclick="openPopup()">&#9776;</span>
+      </div>
+    </div>
+  </nav>
+
+<!-- Main Content -->
+<div class="admin-dashboard">
+  <h1>Welcome, Admin!</h1>
+  <p>Select an action to manage your website:</p>
+
+  <!-- Admin Action Buttons -->
+  <div class="admin-actions">
+    <a href="/maintainAdmin" class="admin-action-button">Maintain Admins</a>
+    <a href="/maintainImages" class="admin-action-button">Maintain Images</a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-content">
+    <p>© 2024 Photography Portfolio. All rights reserved.</p>
+  </div>
+</footer>
+
 </body>
 </html>

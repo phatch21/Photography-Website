@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Image</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="nav-content">
+        <div class="nav-name">Corinne Hatch Photography</div>
+        <div class="nav-menu">
+          <span class="hamburger-icon" onclick="openPopup()">&#9776;</span>
+        </div>
+      </div>
+    </nav>
+    <h1 style="text-align: center;">Edit Image</h1>
+
+    <form class="form-container" action="/editImage/<%= photo.photoID %>" method="POST">
+        <!-- Photo Name Field -->
+        <label for="photoName">New Photo Name</label>
+        <input type="text" id="photoName" name="photoName" value="<%= photo.photoName %>" required>
+        <br><br>
+
+        <!-- Album Field -->
+        <label for="albumID">New Album</label>
+        <select id="albumID" name="albumID" required>
+        <% albums.forEach(album => { %>
+            <option value="<%= album.albumID %>"><%= album.albumName %></option>
+        <% }) %>
+        </select>
+        <br><br>
+
+        <!-- Category Field -->
+        <label for="categoryID">New Category</label>
+        <select id="categoryID" name="categoryID" required>
+        <% categories.forEach(category => { %>
+            <option value="<%= category.categoryID %>"><%= category.catName %></option>
+        <% }) %>
+        </select>
+        <br><br>
+
+        <!-- Description Field -->
+        <label for="description">New Description</label>
+        <input type="password" id="description" name="description" required>
+
+        <!-- Submit Button -->
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+</html>

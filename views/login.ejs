@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="logo2.png" type="image/png">
+</head>
+<body>
+
+  <header class="navbar">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-content">
+        <div class="nav-name">Corinne Hatch Photography</div>
+        <div class="nav-menu">
+            <span class="hamburger-icon" onclick="openPopup()">&#9776;</span>
+        </div>
+        </div>
+    </nav>
+  </header>
+
+<br>
+
+    <form action="/login" method="POST" class="form-container" id="verify-form">
+        <h1 style="text-align: center;">Log in</h1>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username">
+        <br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password">
+        <br><br>
+        <button style="display: flex; justify-content: center; align-items: center;" type="submit">Login</button>
+    </form>
+
+</body>
+</html>

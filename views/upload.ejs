@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload to S3</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    .navbar {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 0;
+      }
+  
+      .navbar .nav-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+      }
+  
+      .navbar .nav-name {
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+  
+      .navbar .hamburger-icon {
+        font-size: 2rem;
+        cursor: pointer;
+      }
+  </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+          <div class="nav-name">Corinne Hatch Photography</div>
+          <div class="nav-menu">
+            <span class="hamburger-icon" onclick="openPopup()">&#9776;</span>
+          </div>
+        </div>
+      </nav>
+    <br><br>
+    <h1>Upload File to S3</h1>
+
+  <!-- Upload Form -->
+  <form id="uploadForm" enctype="multipart/form-data" method="POST" action="/upload">
+    <label for="file">Choose File:</label>
+    <input type="file" name="image" id="file" required />
+    <br><br>
+    <label for="description">Image Description</label>
+    <input type="text" name="description" id="description" required>
+    <br><br>
+    <!-- Album Selection -->
+    <label for="albumID">Select Album:</label>
+    <select name="albumID" id="albumID" required>
+      <option value="" disabled selected>Select an Album</option>
+      <% albums.forEach(album => { %>
+        <option value="<%= album.albumID %>"><%= album.albumName %></option>
+      <% }) %>
+    </select>
+    <br><br>
+
+    <!-- Category Selection -->
+    <label for="categoryID">Select Category:</label>
+    <select name="categoryID" id="categoryID" required>
+      <option value="" disabled selected>Select a Category</option>
+      <% categories.forEach(category => { %>
+        <option value="<%= category.categoryID %>"><%= category.catName %></option>
+      <% }) %>
+    </select>
+    <br><br>
+    
+    <button type="submit">Upload</button>
+  </form>
+
+  <!-- Result Display -->
+  <div id="result" style="margin-top:20px;"></div>
+
+  <script>
+    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+
+      const response = await fetch("/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const result = await response.json();
+
+      const resultDiv = document.getElementById("result");
+      if (response.ok) {
+        resultDiv.innerHTML = `
+          <h2>File Uploaded Successfully!</h2>
+          <p><strong>File Name:</strong> ${result.fileUrl}</p>
+          <img src="${result.fileUrl}" alt="Uploaded Image" width="300">
+        `;
+      } else {
+        resultDiv.innerHTML = `<h2 style="color: red;">Upload Failed: ${result.error}</h2>`;
+      }
+    });
+  </script>
+</body>
+</html>
