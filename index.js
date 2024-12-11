@@ -1,25 +1,56 @@
 const express = require("express");
-const session = require('express-session');
-const bcrypt = require('bcrypt');
-let app = express();
-let path = require("path");
+const session = require("express-session");
+const bcrypt = require("bcrypt");
+const multer = require("multer");
+const path = require("path");
+require("dotenv").config();
+
+// AWS SDK v3
+const { S3Client, PutObjectCommand, ListObjectsCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+
+const app = express();
 const port = process.env.PORT || 3000;
 
+// Initialize AWS S3 Client
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
+// Configure Multer
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+// Configure Express
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
-
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files from "public" folder
 app.use(express.static(path.join(__dirname, "public")));
 
-// Middleware for sessions
-app.use(session({
-    secret: 'supersecretkey', // Change to a secure secret key
+// Configure Sessions
+app.use(
+  session({
+    secret: "supersecretkey",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Use `true` for HTTPS
-}));
+    cookie: { secure: false },
+  })
+);
+
+// Database Connection
+const knex = require("knex")({
+  client: "pg",
+  connection: {
+    host: "localhost",
+    user: "postgres",
+    password: "matt3j145367",
+    database: "IS403_A4",
+    port: 5432,
+  },
+});
 
 // Middleware to check if a user is logged in
 function isAuthenticated(req, res, next) {
@@ -29,62 +60,135 @@ function isAuthenticated(req, res, next) {
     res.redirect('/login'); // Redirect to login page
 }
 
-const knex = require("knex")({
-    client: "pg", // Define the database client (PostgreSQL in this case).
-    connection: { // Database connection details.
-        host: process.env.RDS_HOSTNAME || 'localhost',//"awseb-e-vfbtv3p32z-stack-awsebrdsdatabase-jjafz3q7a3js.cv2g6ywg6824.us-east-1.rds.amazonaws.com", 
-        user: process.env.RDS_USERNAME || "postgres", // PostgreSQL user with access to the database.
-        password: process.env.RDS_PASSWORD || 'matt3j145367',//"supersecretpassword", // Password for the PostgreSQL user.
-        database: process.env.RDS_DB_NAME || "ebdb", // Database name.
-        port: process.env.RDS_PORT || 5432, // Default port for PostgreSQL.
-        ssl: process.env.DB_SSL ? {rejectUnauthorized : false} : false
-    }
-});
+// Hashing a password
+async function hashPassword(password) {
+  const saltRounds = 10; // Number of iterations (adjust based on your system's capacity)
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  return hashedPassword;
+}
 
-// Home route
+// Verifying a password
+// async function verifyPassword(password, hashedPassword) {
+//   const match = await bcrypt.compare(password, hashedPassword);
+//   return match; // Returns true if passwords match
+// }
+
+// Home Route
 app.get("/", (req, res) => {
-    res.render("index");
+  res.render("index");
 });
 
-app.post("/", (req, res) => {
-    const defaultuser = 'blah';
-    const defaultpassword = 'blah';
-    const username = req.body.username;
-    const password = req.body.password;
+// Login route
+app.get('/login', (req, res) => {
+  req.session.isLoggedIn = false;
+  res.render('login');
+});
 
-    // Fetch the admin user from the database
+// Handling a login POST request
+app.post('/login', async (req, res) => {
+  //const { token } = req.body; // The TOTP token entered by the user
+  const username = req.body.username;
+  const password = hashPassword(req.body.password); // Plain-text password from the user
 
-    if (password == defaultpassword && username == defaultuser) {
-        // Use bcrypt.compare() to check the password
-        const isPasswordMatch = bcrypt.compare(password, admin.password);
-        
-        if (isPasswordMatch) {
-            // Password matches, log in the user
-            req.session.isLoggedIn = true;
+  try {
+      // Fetch the admin user from the database
+      const admin = await knex.select()
+          .from('admin')
+          .where('username', username)
+          .first();
 
-            // Store the admin's ID and first name in the session for later use
-            req.session.admin = {
-                admin_id: admin.username,
-            };
+      if (admin) {
+          // Use bcrypt.compare() to check the password
+          const isPasswordMatch = await bcrypt.compare(req.body.password, admin.password); // Fix for login
 
-            // Redirect to the admin page
-            res.render('admin');
-        } else {
-            // Password doesn't match
-            res.status(401).send('Invalid username or password');
-        }
+         
+          if (isPasswordMatch) {
+              // Password matches, log in the user
+              req.session.isLoggedIn = true;
+              res.redirect('/admin');
+          } else {
+              // Password doesn't match
+              res.status(401).send('Invalid username or password');
+          }
+      } else {
+          // Username not found
+          res.status(401).send('Invalid username or password');
+      }
+  } catch (err) {
+      console.error('Error during login:', err);
+      res.status(500).send('An error occurred while processing your request');
+  }
+});
+
+app.post('/logout', (req, res) => {
+  req.session.destroy((err) => {
+      if (err) {
+          return res.status(500).send('Failed to log out');
+      }
+      // Redirect to the login page or home page after logging out
+      res.redirect('/'); // Adjust this as needed
+  });
+});
+
+// Route to Render Upload Form
+app.get("/upload", isAuthenticated,async (req, res) => {
+    try {
+      // Fetch data from PostgreSQL
+      const albums = await knex("album").select("albumID", "albumName");
+      const categories = await knex("category").select("categoryID", "catName");
+  
+      // Render the form with dynamic data
+      res.render("upload", { albums, categories });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      res.status(500).send("Error loading form.");
     }
+});  
+
+// Upload Route
+app.post("/upload", upload.single("image"), async (req, res) => {
+  try {
+    const file = req.file;
+    if (!file) return res.status(400).send("No file uploaded.");
+
+    const key = `uploads/${Date.now()}_${file.originalname}`;
+
+    // Upload File to S3
+    const uploadParams = {
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: key,
+      Body: file.buffer,
+      ContentType: file.mimetype,
+    };
+
+    await s3.send(new PutObjectCommand(uploadParams));
+
+    // Save file metadata in PostgreSQL
+    await knex("photos").insert({
+      photoName: file.originalname,
+      filePath: `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
+      description: req.body.description,
+      categoryID: req.body.categoryID,
+      albumID: req.body.albumID,
+      s3_key: key,
+      dateOfCapture: new Date(),
+    });
+
+    res.render('admin');
+  } catch (error) {
+    console.error("File upload error:", error);
+    res.status(500).send("File upload failed.");
+  }
 });
 
-app.get('/admin', isAuthenticated, (req, res) => {
-    res.render('admin')
-})
- 
+app.get("/admin", isAuthenticated, (req, res) => {
+    res.render("admin");
+});
+
 app.get('/maintainAdmin', isAuthenticated, (req, res) => {
-    knex('Admin')
+    knex('admin')
         .select(
-            'id',
-            'UserName'
+            'username'
         )
         //returns all the records as an ARRAY of ROWS
         .then(admin => {
@@ -97,18 +201,18 @@ app.get('/maintainAdmin', isAuthenticated, (req, res) => {
         });
 });
  
-app.get('/addAdmin', isAuthenticated, async (req, res) => {
+app.get('/addAdmin', async (req, res) => {
     res.render('addAdmin');
-})
+});
  
-app.post('/addAdmin', isAuthenticated, async (req, res) => {
+app.post('/addAdmin', async (req, res) => {
     try {
-        const hashedPassword = await hashPassword(req.body.password); // Hash the password
+        const password = await hashPassword(req.body.password); // Fix for adding admin
         const username = req.body.username;
         // Insert new admin into the database
-        await knex("Admin").insert({
-            UserName: username,
-            Password: hashedPassword // Store the hashed password
+        await knex("admin").insert({
+            username: username,
+            password: password
         });
         res.redirect('maintainAdmin')
  
@@ -118,10 +222,10 @@ app.post('/addAdmin', isAuthenticated, async (req, res) => {
     }
 });
  
-app.post('/deleteAdmin/:id', (req, res) => {
-    const id = req.params.id
-    knex('Admin')
-            .where('id', id)
+app.post('/deleteAdmin/:username', (req, res) => {
+    const username = req.params.username
+    knex('admin')
+            .where('username', username)
             .del() // Deletes the record with the specified ID
             .then(() => {
             res.redirect('/maintainAdmin'); // Redirect to the maintainAdmin list after deletion
@@ -132,47 +236,168 @@ app.post('/deleteAdmin/:id', (req, res) => {
 });
  
 //get info from databse so it shows up when edit is clicked
-app.get('/editAdmin/:id', isAuthenticated, (req, res) => {
-    const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
-        return res.status(400).send('Invalid admin_id');
+app.get('/editAdmin/:username', isAuthenticated, async (req, res) => {
+    const username = req.params.username;
+
+    try {
+        const admin = await knex('admin')
+            .where('username', username)
+            .first();
+
+        if (!admin) {
+            return res.status(404).send('Admin not found');
+        }
+
+        res.render('editAdmin', { admin });
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal Server Error');
     }
-    knex('Admin')
-        .where('id', id)
-        .first()
-        .then(admin => {
-            if (!admin) {
-                return res.status(404).send('Admin not found');
-            }
-            res.render('editAdmin', { admin });
-        })
-        .catch(error => {
-            console.error('Error querying database:', error);
-            res.status(500).send('Internal Server Error');
-        });
 });
- 
+
  
 //Replaced info in admin table w/edits
-app.post('/editAdmin/:id', (req, res) => {
-    const id = req.params.id;
-    const username = req.body.username;
-    const password = hashPassword(req.body.password);
-    knex('Admin')
-        .where('id', id)
-        .first()
-        .update({
-        UserName: username,
-        Password: password,
-        })
-        .then(() => {
-        res.redirect('/maintainAdmin'); // Redirect to the list of Admin after saving
+app.post('/editAdmin/:username', async (req, res) => {
+    const oldUsername = req.params.username;
+    const { username, password } = req.body;
+
+    try {
+        // Hash the new password
+        const hashedPassword = password;
+
+        // Update the database
+        await knex('admin')
+            .where('username', oldUsername)
+            .update({
+                username,
+                password: hashedPassword,
+            });
+
+        res.redirect('/maintainAdmin');
+    } catch (error) {
+        console.error('Error updating admin:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+app.get('/maintainImages', isAuthenticated, (req, res) => {
+    knex('photos')
+        .select()
+        .then(photo => {
+            // Render the index.ejs template and pass the data
+            res.render('maintainImages', { photo });
         })
         .catch(error => {
-        console.error('Error updating Character:', error);
+        console.error('Error querying database:', error);
         res.status(500).send('Internal Server Error');
-    });
-})
+        });
+});
 
-// Start the server
-app.listen(port, () => console.log(`Portfolio website is listening on port ${port}`));
+// Delete Route
+app.post('/deleteImage/:photoID', async (req, res) => {
+    const photoID = req.params.photoID
+
+    const photo = await knex("photos")
+            .where({ photoID: photoID })
+            .first();
+
+    if (!photo) {
+        return res.status(404).send("Photo not found.");
+    }
+
+     // Delete the file from S3
+     const deleteParams = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: photo.s3_key
+    };
+
+    await s3.send(new DeleteObjectCommand(deleteParams));
+
+    await knex('photos')
+            .where('photoID', photoID)
+            .del() // Deletes the record with the specified ID
+            .then(() => {
+            res.redirect('/maintainImages'); // Redirect to the maintainAdmin list after deletion
+        }).catch(error => {
+            console.error('Error deleting images:', error);
+            res.status(500).send('Internal Server Error');
+    });
+});
+
+//get info from databse so it shows up when edit is clicked
+app.get('/editImage/:photoID', isAuthenticated, async (req, res) => {
+    const photoID = req.params.photoID;
+
+    try {
+        // Fetch photos from the database
+        const albums = await knex("album").select("albumID", "albumName");
+      const categories = await knex("category").select("categoryID", "catName");
+  
+      // Fetch photos from the database
+      const photo = await knex("photos")
+        .select()
+        .leftJoin("album", "photos.albumID", "album.albumID")
+        .leftJoin("category", "photos.categoryID", "category.categoryID")
+        .where("photoID", photoID);
+  
+      // Render the gallery with the dynamic data
+      res.render("editImage", { albums, categories, photo });
+
+    } catch (error) {
+        console.error('Error querying database:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+//Replaced info in admin table w/edits
+app.post('/editImage/:photoID', async (req, res) => {
+    const photoID = req.params.photoID;
+    const photoName = req.body.photoName;
+    const description = req.body.description;
+    const categoryID = parseInt(req.body.categoryID);
+    const albumID = parseInt(req.body.albumID);
+
+    try {
+
+        // Update the database
+        await knex('photos')
+            .where('photoID', photoID)
+            .update({
+                photoName: photoName,
+                description: description,
+                categoryID: categoryID,
+                albumID: albumID
+            });
+
+        res.redirect('/maintainImages');
+    } catch (error) {
+        console.error('Error updating images:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Route to Render the Gallery
+app.get("/gallery", async (req, res) => {
+    try {
+      // Fetch albums and categories from the database
+      const albums = await knex("album").select("albumID", "albumName");
+      const categories = await knex("category").select("categoryID", "catName");
+  
+      // Fetch photos from the database
+      const photos = await knex("photos")
+        .select()
+        .leftJoin("album", "photos.albumID", "album.albumID")
+        .leftJoin("category", "photos.categoryID", "category.categoryID");
+  
+      // Render the gallery with the dynamic data
+      res.render("gallery", { albums, categories, photos });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      res.status(500).send("Error loading gallery.");
+    }
+});
+
+// Start the Server
+app.listen(port, () =>
+  console.log(`Portfolio website running on http://localhost:${port}`)
+);
