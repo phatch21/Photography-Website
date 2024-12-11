@@ -4,7 +4,8 @@
   "description": "Photography Portfolio with functional RDBMS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
   },
   "author": "Vin Jones, Zach Katzenbach, Payton Hatch, Spencer Bullock",
   "license": "ISC",
