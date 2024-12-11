@@ -16,6 +16,8 @@
         </div>
       </div>
     </nav>
+
+    <br><br>
     <h1 style="text-align: center;">Edit Image</h1>
 
     <!-- Popup Modal -->
@@ -29,36 +31,44 @@
     </div>
 
     <form class="form-container" action="/editImage/<%= photo.photoID %>" method="POST">
-        <!-- Photo Name Field -->
-        <label for="photoName">New Photo Name</label>
-        <input type="text" id="photoName" name="photoName" value="<%= photo.photoName %>" required>
-        <br><br>
-
-        <!-- Album Field -->
-        <label for="albumID">New Album</label>
-        <select id="albumID" name="albumID" required>
-        <% albums.forEach(album => { %>
-            <option value="<%= album.albumID %>"><%= album.albumName %></option>
-        <% }) %>
-        </select>
-        <br><br>
-
-        <!-- Category Field -->
-        <label for="categoryID">New Category</label>
-        <select id="categoryID" name="categoryID" required>
-        <% categories.forEach(category => { %>
-            <option value="<%= category.categoryID %>"><%= category.catName %></option>
-        <% }) %>
-        </select>
-        <br><br>
-
-        <!-- Description Field -->
-        <label for="description">New Description</label>
-        <input type="password" id="description" name="description" required>
-
-        <!-- Submit Button -->
-        <button type="submit">Save Changes</button>
+      <input type="number" id="photoID" name="photoID" value="<%= photo.photoID %>" hidden>
+      <!-- Photo Name Field -->
+      <label for="photoName">New Photo Name</label>
+      <input type="text" id="photoName" name="photoName" value="<%= photo.photoName %>" required>
+      <br><br>
+  
+      <!-- Album Field -->
+      <label for="albumID">New Album</label>
+      <select id="albumID" name="albumID" required>
+          <% albums.forEach(album => { %>
+              <option value="<%= album.albumID %>" 
+                  <%= album.albumID === photo.albumID ? "selected" : "" %>>
+                  <%= album.albumName %>
+              </option>
+          <% }) %>
+      </select>
+      <br><br>
+  
+      <!-- Category Field -->
+      <label for="categoryID">New Category</label>
+      <select id="categoryID" name="categoryID" required>
+          <% categories.forEach(category => { %>
+              <option value="<%= category.categoryID %>" 
+                  <%= category.categoryID === photo.categoryID ? "selected" : "" %>>
+                  <%= category.catName %>
+              </option>
+          <% }) %>
+      </select>
+      <br><br>
+  
+      <!-- Description Field -->
+      <label for="description">New Description</label>
+      <input type="text" id="description" name="description" value="<%= photo.description %>" required>
+  
+      <!-- Submit Button -->
+      <button type="submit">Save Changes</button>
     </form>
+  
 
     <script>
       // Popup functions

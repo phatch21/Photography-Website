@@ -33,7 +33,6 @@
     <table>
         <thead>
             <tr>
-                <th>Photo</th>
                 <th>Photo Name</th>
                 <th>Album</th>
                 <th>Category</th>
@@ -46,14 +45,13 @@
                 <% photo.forEach(row => { %>
                 <tr>
                     <input type="hidden" value="<%= row.photoID %>">
-                    <td>
-                        <div class="photo-container" data-category="<%= photo.categoryID %>" data-album="<%= photo.albumID %>">
-                            <img src="<%= photo.filePath %>" alt="<%= photo.fileDescription || 'Image' %>" >
-                        </div>
-                    </td>
                     <td><%= row.photoName%></td>
-                    <td><%= row.albumID %></td>
-                    <td><%= row.categoryID%></td>
+                    <td>
+                        <%= album.find(album => album.albumID === row.albumID)?.albumName || "Unknown" %>
+                      </td>
+                      <td>
+                        <%= category.find(category => category.categoryID === row.categoryID)?.catName || "Unknown" %>
+                      </td>                      
                     <td><%= row.description%></td>
                     <td>
                         <form action="/editImage/<%= row.photoID %>" method="GET" style="display:inline;">

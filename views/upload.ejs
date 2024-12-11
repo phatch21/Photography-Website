@@ -53,42 +53,74 @@
     <h1 style="text-align: center;">Upload Photo to Gallery</h1>
 
   <!-- Upload Form -->
-  <div class="form-container">
-    <form id="uploadForm" enctype="multipart/form-data" method="POST" action="/upload">
-      <label for="file">Choose File:</label>
-      <input type="file" name="image" id="file" required />
-      <br><br>
-      <label for="description">Image Description</label>
-      <input type="text" name="description" id="description" required>
-      <br><br>
-      <!-- Album Selection -->
-      <label for="albumID">Select Album:</label>
-      <select name="albumID" id="albumID" required>
-        <option value="" disabled selected>Select an Album</option>
-        <% albums.forEach(album => { %>
-          <option value="<%= album.albumID %>"><%= album.albumName %></option>
-        <% }) %>
-      </select>
-      <br><br>
+<div class="form-container">
+  <form id="uploadForm" enctype="multipart/form-data" method="POST">
+    <label for="file">Choose File:</label>
+    <input type="file" name="image" id="file" required />
+    <br><br>
+    <label for="description">Image Description</label>
+    <input type="text" name="description" id="description" required>
+    <br><br>
 
-      <!-- Category Selection -->
-      <label for="categoryID">Select Category:</label>
-      <select name="categoryID" id="categoryID" required>
-        <option value="" disabled selected>Select a Category</option>
-        <% categories.forEach(category => { %>
-          <option value="<%= category.categoryID %>"><%= category.catName %></option>
-        <% }) %>
-      </select>
-      <br><br>
-      
-      <button type="submit">Upload</button>
-    </form>
-  </div>
+    <!-- Album Selection -->
+    <label for="albumID">Select Album:</label>
+    <select name="albumID" id="albumID" required>
+      <option value="" disabled selected>Select an Album</option>
+      <% albums.forEach(album => { %>
+        <option value="<%= album.albumID %>"><%= album.albumName %></option>
+      <% }) %>
+    </select>
+    <br><br>
 
-  <!-- Result Display -->
-  <div id="result" style="margin-top:20px;"></div>
+    <!-- Category Selection -->
+    <label for="categoryID">Select Category:</label>
+    <select name="categoryID" id="categoryID" required>
+      <option value="" disabled selected>Select a Category</option>
+      <% categories.forEach(category => { %>
+        <option value="<%= category.categoryID %>"><%= category.catName %></option>
+      <% }) %>
+    </select>
+    <br><br>
 
-  <script>
+    <button type="submit">Upload</button>
+  </form>
+</div>
+
+<!-- Result Display -->
+<div id="result" style="margin-top: 20px; color: white;"></div>
+
+<script>
+    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+
+      try {
+        const response = await fetch("/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        const resultDiv = document.getElementById("result");
+
+        if (response.ok) {
+          resultDiv.innerHTML = `<h2>${result.message}</h2>`;
+
+          // Redirect to /admin after 3 seconds
+          setTimeout(() => {
+            window.location.href = result.redirectUrl;
+          }, 3000); // Delay for 3 seconds
+        } else {
+          resultDiv.innerHTML = `<h2 style="color: red;">Upload Failed: ${result.error}</h2>`;
+        }
+      } catch (error) {
+        console.error("Upload error:", error);
+        document.getElementById("result").innerHTML = `<h2 style="color: red;">An unexpected error occurred.</h2>`;
+      }
+    });
+
     // Popup functions
     function openPopup() {
       document.getElementById("popupModal").style.display = "flex";
@@ -97,29 +129,6 @@
       document.getElementById("popupModal").style.display = "none";
     }
 
-    document.getElementById("uploadForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(e.target);
-
-      const response = await fetch("/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      const result = await response.json();
-
-      const resultDiv = document.getElementById("result");
-      if (response.ok) {
-        resultDiv.innerHTML = `
-          <h2>File Uploaded Successfully!</h2>
-          <p><strong>File Name:</strong> ${result.fileUrl}</p>
-          <img src="${result.fileUrl}" alt="Uploaded Image" width="300">
-        `;
-      } else {
-        resultDiv.innerHTML = `<h2 style="color: red;">Upload Failed: ${result.error}</h2>`;
-      }
-    });
   </script>
 </body>
 </html>

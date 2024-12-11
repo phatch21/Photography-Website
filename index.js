@@ -44,10 +44,10 @@ app.use(
 const knex = require("knex")({
   client: "pg", // Define the database client (PostgreSQL in this case).
   connection: { // Database connection details.
-      host: process.env.RDS_HOSTNAME || "awseb-e-xqydbh7xwn-stack-awsebrdsdatabase-dwl8zqlcxpnq.cv2g6ywg6824.us-east-1.rds.amazonaws.com", 
+      host: process.env.RDS_HOSTNAME || 'localhost',//"awseb-e-xqydbh7xwn-stack-awsebrdsdatabase-dwl8zqlcxpnq.cv2g6ywg6824.us-east-1.rds.amazonaws.com", 
       user: process.env.RDS_USERNAME || "postgres", // PostgreSQL user with access to the database.
-      password: process.env.RDS_PASSWORD || "supersecretpassword", // Password for the PostgreSQL user.
-      database: process.env.RDS_DB_NAME || "ebdb", // Database name.
+      password: process.env.RDS_PASSWORD || 'matt3j145367',//"supersecretpassword", // Password for the PostgreSQL user.
+      database: process.env.RDS_DB_NAME || "IS403_A4", // Database name.
       port: process.env.RDS_PORT || 5432, // Default port for PostgreSQL.
       ssl: process.env.DB_SSL ? {rejectUnauthorized : false} : false
   }
@@ -169,10 +169,14 @@ app.post("/upload", upload.single("image"), async (req, res) => {
       dateOfCapture: new Date(),
     });
 
-    res.render('admin');
+    // Respond with success message
+    res.status(200).json({
+      message: "Upload Successful!",
+      redirectUrl: "/admin",
+    });
   } catch (error) {
     console.error("File upload error:", error);
-    res.status(500).send("File upload failed.");
+    res.status(500).json({ error: "File upload failed. Please try again." });
   }
 });
 
@@ -275,17 +279,21 @@ app.post('/editAdmin/:username', async (req, res) => {
     }
 });
 
-app.get('/maintainImages', isAuthenticated, (req, res) => {
-    knex('photos')
-        .select()
-        .then(photo => {
-            // Render the index.ejs template and pass the data
-            res.render('maintainImages', { photo });
-        })
-        .catch(error => {
-        console.error('Error querying database:', error);
-        res.status(500).send('Internal Server Error');
-        });
+app.get('/maintainImages', isAuthenticated, async (req, res) => {
+  try {
+      // Run all queries in parallel
+      const [photo, category, album] = await Promise.all([
+          knex('photos').select(),
+          knex('category').select(),
+          knex('album').select()
+      ]);
+
+      // Render the template with all three data sets
+      res.render('maintainImages', { photo, category, album });
+  } catch (error) {
+      console.error('Error querying database:', error);
+      res.status(500).send('Internal Server Error');
+  }
 });
 
 // Delete Route
@@ -321,54 +329,56 @@ app.post('/deleteImage/:photoID', async (req, res) => {
 
 //get info from databse so it shows up when edit is clicked
 app.get('/editImage/:photoID', isAuthenticated, async (req, res) => {
-    const photoID = req.params.photoID;
+  const photoID = req.params.photoID;
 
-    try {
-        // Fetch photos from the database
-        const albums = await knex("album").select("albumID", "albumName");
+  try {
+      // Fetch albums and categories from the database
+      const albums = await knex("album").select("albumID", "albumName");
       const categories = await knex("category").select("categoryID", "catName");
-  
-      // Fetch photos from the database
+
+      // Fetch the specific photo details
       const photo = await knex("photos")
-        .select()
-        .leftJoin("album", "photos.albumID", "album.albumID")
-        .leftJoin("category", "photos.categoryID", "category.categoryID")
-        .where("photoID", photoID);
-  
-      // Render the gallery with the dynamic data
+          .select("photos.*", "album.albumName", "category.catName")
+          .leftJoin("album", "photos.albumID", "album.albumID")
+          .leftJoin("category", "photos.categoryID", "category.categoryID")
+          .where("photoID", photoID)
+          .first(); // Ensure only one photo is fetched
+
+      if (!photo) {
+          return res.status(404).send("Photo not found");
+      }
+
+      // Render the edit page with fetched data
       res.render("editImage", { albums, categories, photo });
 
-    } catch (error) {
-        console.error('Error querying database:', error);
-        res.status(500).send('Internal Server Error');
-    }
+  } catch (error) {
+      console.error("Error querying database:", error);
+      res.status(500).send("Internal Server Error");
+  }
 });
 
 //Replaced info in admin table w/edits
 app.post('/editImage/:photoID', async (req, res) => {
-    const photoID = req.params.photoID;
-    const photoName = req.body.photoName;
-    const description = req.body.description;
-    const categoryID = parseInt(req.body.categoryID);
-    const albumID = parseInt(req.body.albumID);
+  const { photoID } = req.params;
+  const { photoName, description, albumID, categoryID } = req.body;
 
-    try {
+  try {
+      // Update the database with new data
+      await knex('photos')
+          .where({ photoID })
+          .update({
+              photoName,
+              description,
+              albumID: parseInt(albumID),     // Ensure IDs are integers
+              categoryID: parseInt(categoryID),
+          });
 
-        // Update the database
-        await knex('photos')
-            .where('photoID', photoID)
-            .update({
-                photoName: photoName,
-                description: description,
-                categoryID: categoryID,
-                albumID: albumID
-            });
-
-        res.redirect('/maintainImages');
-    } catch (error) {
-        console.error('Error updating images:', error);
-        res.status(500).send('Internal Server Error');
-    }
+      // Redirect after successful update
+      res.redirect('/admin'); 
+  } catch (error) {
+      console.error('Error updating photo:', error);
+      res.status(500).send('Internal Server Error');
+  }
 });
 
 // Route to Render the Gallery
