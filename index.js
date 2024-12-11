@@ -202,7 +202,7 @@ app.get('/maintainAdmin', isAuthenticated, (req, res) => {
         });
 });
  
-app.get('/addAdmin', async (req, res) => {
+app.get('/addAdmin', isAuthenticated, async (req, res) => {
     res.render('addAdmin');
 });
  
