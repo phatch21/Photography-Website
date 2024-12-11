@@ -40,7 +40,19 @@
         </div>
       </nav>
     <br><br>
-    <h1>Upload File to S3</h1>
+
+    <!-- Popup Modal -->
+    <div class="popup-modal" id="popupModal">
+      <div class="modal-content">
+        <span class="close-icon" onclick="closePopup()">&#10005;</span>
+        <a href="/" onclick="closePopup()">Home</a>
+        <a href="/gallery" onclick="closePopup()">Gallery</a>
+        <a href="#contact" onclick="closePopup()">Contact</a>
+        <a href="/admin" onclick="closePopup()">Admin</a>
+      </div>
+    </div>
+
+    <h1>Upload Photo to Gallery</h1>
 
   <!-- Upload Form -->
   <form id="uploadForm" enctype="multipart/form-data" method="POST" action="/upload">
@@ -77,6 +89,14 @@
   <div id="result" style="margin-top:20px;"></div>
 
   <script>
+    // Popup functions
+    function openPopup() {
+      document.getElementById("popupModal").style.display = "flex";
+    }
+    function closePopup() {
+      document.getElementById("popupModal").style.display = "none";
+    }
+
     document.getElementById("uploadForm").addEventListener("submit", async (e) => {
       e.preventDefault();
 

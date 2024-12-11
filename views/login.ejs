@@ -21,6 +21,17 @@
     </nav>
   </header>
 
+  <!-- Popup Modal -->
+  <div class="popup-modal" id="popupModal">
+    <div class="modal-content">
+      <span class="close-icon" onclick="closePopup()">&#10005;</span>
+      <a href="/" onclick="closePopup()">Home</a>
+      <a href="/gallery" onclick="closePopup()">Gallery</a>
+      <a href="#contact" onclick="closePopup()">Contact</a>
+      <a href="/admin" onclick="closePopup()">Admin</a>
+    </div>
+  </div>
+
 <br>
 
     <form action="/login" method="POST" class="form-container" id="verify-form">
@@ -33,6 +44,16 @@
         <br><br>
         <button style="display: flex; justify-content: center; align-items: center;" type="submit">Login</button>
     </form>
+
+    <script>
+        // Popup functions
+        function openPopup() {
+          document.getElementById("popupModal").style.display = "flex";
+        }
+        function closePopup() {
+          document.getElementById("popupModal").style.display = "none";
+        }
+    </script>
 
 </body>
 </html>

@@ -4,18 +4,20 @@
   "description": "Photography Portfolio with functional RDBMS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Vin Jones, Zach Katzenbach, Payton Hatch, Spencer Bullock",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.705.0",
+    "aws-sdk": "^2.1692.0",
     "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
-    "express-fileupload": "^1.5.1",
     "express-session": "^1.18.1",
     "knex": "^3.1.0",
+    "multer": "^1.4.5-lts.1",
     "pg": "^8.13.1"
   }
 }

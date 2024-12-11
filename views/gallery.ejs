@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Photographer Portfolio</title>
+  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Freight+Display+Pro&display=swap" rel="stylesheet">
   <style>
@@ -137,7 +138,18 @@
     </div>
   </nav>
 
-  <div class="gallery-title">Photo Gallery</div>
+  <!-- Popup Modal -->
+  <div class="popup-modal" id="popupModal">
+    <div class="modal-content">
+      <span style='color: black;' class="close-icon" onclick="closePopup()">&times;</span>
+      <a href="/" onclick="closePopup()">Home</a>
+      <a href="/gallery" onclick="closePopup()">Gallery</a>
+      <a href="#contact" onclick="closePopup()">Contact</a>
+      <a href="/admin" onclick="closePopup()">Admin</a>
+    </div>
+  </div>
+
+  <div class="gallery-title"><br>Photo Gallery</div>
   <hr>
   
   <!-- Dropdown for Photo Categories -->
@@ -176,8 +188,6 @@
         <p>No photos found.</p>
         <% } %>
     </section>
-  
-  
 
   <!-- Popup Modal for Image -->
   <div class="popup-modal" id="popupModal">
@@ -186,17 +196,20 @@
   </div>
 
   <script>
+    // Popup functions
+    function openPopup() {
+      document.getElementById("popupModal").style.display = "flex";
+    }
+    function closePopup() {
+      document.getElementById("popupModal").style.display = "none";
+    }
+
     // Open Photo Popup
     function openPhoto(imagePath) {
     const popupModal = document.getElementById("popupModal");
     const popupImage = document.getElementById("popupImage");
     popupModal.style.display = "flex";
     popupImage.src = imagePath;
-    }
-
-    // Close Photo Popup
-    function closePopup() {
-    document.getElementById("popupModal").style.display = "none";
     }
 
     // Filter Gallery Based on Album and Category

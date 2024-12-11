@@ -17,6 +17,17 @@
         </div>
     </nav>
 
+    <!-- Popup Modal -->
+    <div class="popup-modal" id="popupModal">
+        <div class="modal-content">
+        <span class="close-icon" onclick="closePopup()">&#10005;</span>
+        <a href="/" onclick="closePopup()">Home</a>
+        <a href="/gallery" onclick="closePopup()">Gallery</a>
+        <a href="#contact" onclick="closePopup()">Contact</a>
+        <a href="/admin" onclick="closePopup()">Admin</a>
+        </div>
+    </div>
+
     <br><br><br><br>
 
     <div class="form-container">
@@ -62,11 +73,24 @@
             <% } %>
         </tbody>
     </table>
+
+    <br>
      
     <form action="/upload" method="GET" style="text-align: center;">
         <button type="submit">Add New Image</button>
     </form>
     </div>
     <br>
+
+    <script>
+        // Popup functions
+        function openPopup() {
+          document.getElementById("popupModal").style.display = "flex";
+        }
+        function closePopup() {
+          document.getElementById("popupModal").style.display = "none";
+        }
+    </script>
+
 </body>
 </html>

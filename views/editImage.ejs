@@ -18,6 +18,17 @@
     </nav>
     <h1 style="text-align: center;">Edit Image</h1>
 
+    <!-- Popup Modal -->
+    <div class="popup-modal" id="popupModal">
+      <div class="modal-content">
+        <span class="close-icon" onclick="closePopup()">&#10005;</span>
+        <a href="/" onclick="closePopup()">Home</a>
+        <a href="/gallery" onclick="closePopup()">Gallery</a>
+        <a href="#contact" onclick="closePopup()">Contact</a>
+        <a href="/admin" onclick="closePopup()">Admin</a>
+      </div>
+    </div>
+
     <form class="form-container" action="/editImage/<%= photo.photoID %>" method="POST">
         <!-- Photo Name Field -->
         <label for="photoName">New Photo Name</label>
@@ -49,5 +60,16 @@
         <!-- Submit Button -->
         <button type="submit">Save Changes</button>
     </form>
+
+    <script>
+      // Popup functions
+      function openPopup() {
+        document.getElementById("popupModal").style.display = "flex";
+      }
+      function closePopup() {
+        document.getElementById("popupModal").style.display = "none";
+      }
+    </script>
+
 </body>
 </html>

@@ -40,16 +40,17 @@ app.use(
   })
 );
 
-// Database Connection
+// Connect to the db
 const knex = require("knex")({
-  client: "pg",
-  connection: {
-    host: "localhost",
-    user: "postgres",
-    password: "matt3j145367",
-    database: "IS403_A4",
-    port: 5432,
-  },
+  client: "pg", // Define the database client (PostgreSQL in this case).
+  connection: { // Database connection details.
+      host: process.env.RDS_HOSTNAME || "awseb-e-xqydbh7xwn-stack-awsebrdsdatabase-dwl8zqlcxpnq.cv2g6ywg6824.us-east-1.rds.amazonaws.com", 
+      user: process.env.RDS_USERNAME || "postgres", // PostgreSQL user with access to the database.
+      password: process.env.RDS_PASSWORD || "supersecretpassword", // Password for the PostgreSQL user.
+      database: process.env.RDS_DB_NAME || "ebdb", // Database name.
+      port: process.env.RDS_PORT || 5432, // Default port for PostgreSQL.
+      ssl: process.env.DB_SSL ? {rejectUnauthorized : false} : false
+  }
 });
 
 // Middleware to check if a user is logged in
