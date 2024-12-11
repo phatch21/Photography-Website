@@ -368,9 +368,8 @@ body {
   transform: scale(1.05);
 }
 
-* TABLE CSS START */
 table {
-  width: 90%;
+  width: 100%;
   margin: 20px auto;
   border-collapse: collapse;
   font-size: 14px;

@@ -29,12 +29,11 @@
 
     <br><br><br><br>
 
-    <div class="form-container">
+    <div class="form-container" style="text-align: center;">
     <table>
         <thead>
             <tr>
                 <th>Username</th>
-                <th>Password</th>
                 <th>Modify</th>
             </tr>
         </thead>
@@ -44,7 +43,6 @@
                 <tr>
                     <input type="hidden" value="<%= row.username %>">
                     <td><%= row.username%></td>
-                    <td><%= row.password %></td>
                     <td>
                         <form action="/editAdmin/<%= row.username %>" method="GET" style="display:inline;">
                             <button type="submit">Edit</button>

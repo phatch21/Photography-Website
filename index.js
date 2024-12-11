@@ -68,12 +68,6 @@ async function hashPassword(password) {
   return hashedPassword;
 }
 
-// Verifying a password
-// async function verifyPassword(password, hashedPassword) {
-//   const match = await bcrypt.compare(password, hashedPassword);
-//   return match; // Returns true if passwords match
-// }
-
 // Home Route
 app.get("/", (req, res) => {
   res.render("index");
@@ -132,7 +126,7 @@ app.post('/logout', (req, res) => {
 });
 
 // Route to Render Upload Form
-app.get("/upload", isAuthenticated,async (req, res) => {
+app.get("/upload", isAuthenticated, async (req, res) => {
     try {
       // Fetch data from PostgreSQL
       const albums = await knex("album").select("albumID", "albumName");
