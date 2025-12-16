@@ -50,12 +50,14 @@ body {
   top: 0;
   z-index: 1000;
 }
+
 .nav-content {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   max-width: 1200px;
   margin: auto;
+  position: relative;
 }
 .nav-name {
   font-size: 32px;
@@ -64,10 +66,26 @@ body {
   flex-grow: 1;
 }
 .nav-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 60px;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
   cursor: pointer;
+  background: transparent;
 }
 .hamburger-icon {
-  font-size: 24px;
+  font-size: 32px;
+  color: #333;
+}
+@media (max-width: 600px) {
+  .hamburger-icon {
+    font-size: 36px;
+  }
 }
 
 /* Dark navbar for gallery page only */
