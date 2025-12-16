@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photo Gallery</title>
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+        margin: 0 10%;
+      }
+      .gallery .photo-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+      }
+      .gallery .photo-container img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.3s ease-in-out;
+      }
+      .gallery .photo-container img:hover {
+        transform: scale(1.05);
+        cursor: pointer;
+      }
+      .popup-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+      }
+      .popup-modal img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+      }
+      .popup-modal .close-icon {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2rem;
+        color: white;
+        cursor: pointer;
+      }
+      .gallery-title {
+        text-align: center;
+        font-size: 2rem;
+        margin: 40px 0 10px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="gallery-title"><br />Photo Gallery</div>
+    <hr />
+    <section class="gallery">
+      <div class="photo-container"><img src="blur.jpeg" alt="blur" /></div>
+      <div class="photo-container">
+        <img src="closeelephant.jpeg" alt="closeelephant" />
+      </div>
+      <div class="photo-container"><img src="dock.jpeg" alt="dock" /></div>
+      <div class="photo-container">
+        <img src="elephant.jpeg" alt="elephant" />
+      </div>
+      <div class="photo-container"><img src="eye.jpeg" alt="eye" /></div>
+      <div class="photo-container">
+        <img src="flytrap.jpeg" alt="flytrap" />
+      </div>
+      <div class="photo-container">
+        <img src="girlflower.jpeg" alt="girlflower" />
+      </div>
+      <div class="photo-container">
+        <img src="girlsmile.jpeg" alt="girlsmile" />
+      </div>
+      <div class="photo-container"><img src="lamp.jpeg" alt="lamp" /></div>
+      <div class="photo-container"><img src="laugh.jpeg" alt="laugh" /></div>
+      <div class="photo-container">
+        <img src="littleboy.jpeg" alt="littleboy" />
+      </div>
+      <div class="photo-container"><img src="monkey.jpeg" alt="monkey" /></div>
+      <div class="photo-container">
+        <img src="mountain.jpeg" alt="mountain" />
+      </div>
+      <div class="photo-container">
+        <img src="purpflower.jpeg" alt="purpflower" />
+      </div>
+      <div class="photo-container">
+        <img src="reflection.jpeg" alt="reflection" />
+      </div>
+      <div class="photo-container"><img src="sky.jpeg" alt="sky" /></div>
+      <div class="photo-container"><img src="smile.jpeg" alt="smile" /></div>
+      <div class="photo-container"><img src="snail.jpeg" alt="snail" /></div>
+      <div class="photo-container"><img src="temple.jpeg" alt="temple" /></div>
+    </section>
+    <div class="popup-modal" id="popupModal">
+      <span class="close-icon" onclick="closePopup()">&times;</span>
+      <img id="popupImage" src="" alt="Expanded Image" />
+    </div>
+    <script>
+      // Open Photo Popup
+      function openPhoto(imagePath) {
+        const popupModal = document.getElementById("popupModal");
+        const popupImage = document.getElementById("popupImage");
+        popupModal.style.display = "flex";
+        popupImage.src = imagePath;
+      }
+      // Close Popup
+      function closePopup() {
+        document.getElementById("popupModal").style.display = "none";
+      }
+      // Add click event to all images
+      document.querySelectorAll(".photo-container img").forEach((img) => {
+        img.addEventListener("click", function () {
+          openPhoto(this.src);
+        });
+      });
+    </script>
+  </body>
+</html>
