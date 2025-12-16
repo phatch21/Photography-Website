@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Photo Gallery</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Google Fonts and Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Freight+Display+Pro&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="nav-content">
+        <div class="nav-name">Corinne Hatch Photography</div>
+        <div class="nav-menu">
+          <span class="hamburger-icon" onclick="openNavPopup()">&#9776;</span>
+        </div>
+      </div>
+    </nav>
+    <!-- Navigation Popup Modal -->
+    <div class="popup-modal" id="navPopupModal">
+      <div class="modal-content">
+        <span style="color: black" class="close-icon" onclick="closeNavPopup()"
+          >&times;</span
+        >
+        <a href="index.html" onclick="closeNavPopup()">Home</a>
+        <a href="gallery.html" onclick="closeNavPopup()">Gallery</a>
+        <a href="admin.html" onclick="closeNavPopup()">Admin</a>
+      </div>
+    </div>
+    <div class="gallery-title"><br />Photo Gallery</div>
+    <hr />
+    <!-- Dropdown for Photo Categories (static) -->
+    <div class="dropdown">
+      <label for="photo-category">Select Category:</label>
+      <select id="photo-category">
+        <option value="all">All Categories</option>
+        <option value="nature">Nature</option>
+        <option value="people">People</option>
+        <option value="architecture">Architecture</option>
+      </select>
+    </div>
+    <!-- Dropdown for Albums (static) -->
+    <div class="dropdown">
+      <label for="photo-album">Select Album:</label>
+      <select id="photo-album">
+        <option value="all">All Albums</option>
+        <option value="album1">Album 1</option>
+        <option value="album2">Album 2</option>
+      </select>
+    </div>
+    <section class="gallery">
+      <div class="photo-container"><img src="blur.jpeg" alt="blur" /></div>
+      <div class="photo-container">
+        <img src="closeelephant.jpeg" alt="closeelephant" />
+      </div>
+      <div class="photo-container"><img src="dock.jpeg" alt="dock" /></div>
+      <div class="photo-container">
+        <img src="elephant.jpeg" alt="elephant" />
+      </div>
+      <div class="photo-container"><img src="eye.jpeg" alt="eye" /></div>
+      <div class="photo-container">
+        <img src="flytrap.jpeg" alt="flytrap" />
+      </div>
+      <div class="photo-container">
+        <img src="girlflower.jpeg" alt="girlflower" />
+      </div>
+      <div class="photo-container">
+        <img src="girlsmile.jpeg" alt="girlsmile" />
+      </div>
+      <div class="photo-container"><img src="lamp.jpeg" alt="lamp" /></div>
+      <div class="photo-container"><img src="laugh.jpeg" alt="laugh" /></div>
+      <div class="photo-container">
+        <img src="littleboy.jpeg" alt="littleboy" />
+      </div>
+      <div class="photo-container"><img src="monkey.jpeg" alt="monkey" /></div>
+      <div class="photo-container">
+        <img src="mountain.jpeg" alt="mountain" />
+      </div>
+      <div class="photo-container">
+        <img src="purpflower.jpeg" alt="purpflower" />
+      </div>
+      <div class="photo-container">
+        <img src="reflection.jpeg" alt="reflection" />
+      </div>
+      <div class="photo-container"><img src="sky.jpeg" alt="sky" /></div>
+      <div class="photo-container"><img src="smile.jpeg" alt="smile" /></div>
+      <div class="photo-container"><img src="snail.jpeg" alt="snail" /></div>
+      <div class="photo-container"><img src="temple.jpeg" alt="temple" /></div>
+    </section>
+    <!-- Image Popup Modal -->
+    <div class="popup-modal" id="popupModal">
+      <span class="close-icon" onclick="closePopup()">&times;</span>
+      <img id="popupImage" src="" alt="Expanded Image" />
+    </div>
+    <script>
+      // Navigation Popup functions
+      function openNavPopup() {
+        document.getElementById("navPopupModal").style.display = "flex";
+      }
+      function closeNavPopup() {
+        document.getElementById("navPopupModal").style.display = "none";
+      }
+      // Open Photo Popup
+      function openPhoto(imagePath) {
+        const popupModal = document.getElementById("popupModal");
+        const popupImage = document.getElementById("popupImage");
+        popupModal.style.display = "flex";
+        popupImage.src = imagePath;
+      }
+      // Close Popup
+      function closePopup() {
+        document.getElementById("popupModal").style.display = "none";
+      }
+      // Add click event to all images
+      document.querySelectorAll(".photo-container img").forEach((img) => {
+        img.addEventListener("click", function () {
+          openPhoto(this.src);
+        });
+      });
+      // Filter Gallery Based on Album and Category (static logic)
+      function applyFilter() {
+        const selectedCategory =
+          document.getElementById("photo-category").value;
+        const selectedAlbum = document.getElementById("photo-album").value;
+        const photos = document.querySelectorAll(".photo-container");
+        photos.forEach((photo, idx) => {
+          // For demo, assign categories/albums by index
+          let photoCategory = "nature";
+          let photoAlbum = "album1";
+          if (idx % 3 === 1) photoCategory = "people";
+          if (idx % 3 === 2) photoCategory = "architecture";
+          if (idx % 2 === 1) photoAlbum = "album2";
+          // Check if filters match or if "all" is selected
+          const matchesCategory =
+            selectedCategory === "all" || selectedCategory === photoCategory;
+          const matchesAlbum =
+            selectedAlbum === "all" || selectedAlbum === photoAlbum;
+          if (matchesCategory && matchesAlbum) {
+            photo.style.display = "block";
+          } else {
+            photo.style.display = "none";
+          }
+        });
+      }
+      document
+        .getElementById("photo-category")
+        .addEventListener("change", applyFilter);
+      document
+        .getElementById("photo-album")
+        .addEventListener("change", applyFilter);
+      window.onload = applyFilter;
+    </script>
+  </body>
+</html>

@@ -1,6 +1,136 @@
+body {
+  font-family: "Freight Display Pro", serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+/* Default navbar (white, for most pages) */
+.navbar {
+  width: 100%;
+  background-color: #fff;
+  color: #333;
+  padding: 15px 20px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+.nav-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: auto;
+}
+.nav-name {
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  flex-grow: 1;
+}
+.nav-menu {
+  cursor: pointer;
+}
+.hamburger-icon {
+  font-size: 24px;
+}
+
+/* Dark navbar for gallery page only */
+.navbar.dark {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 0;
+  position: static;
+}
+.navbar.dark .nav-content {
+  padding: 0 20px;
+  max-width: none;
+}
+.navbar.dark .nav-name {
+  font-size: 1.5rem;
+  color: #fff;
+}
+.navbar.dark .hamburger-icon {
+  font-size: 2rem;
+  color: #fff;
+}
+
+.dropdown {
+  margin: 20px auto;
+  text-align: center;
+}
+.dropdown select {
+  font-family: "Freight Display Pro", serif;
+  padding: 10px;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  width: 200px;
+}
+.dropdown select:hover {
+  border-color: #333;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  margin: 0 10%;
+}
+.gallery .photo-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.gallery .photo-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease-in-out;
+}
+.gallery .photo-container img:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+.popup-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 1000;
+}
+.popup-modal img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+}
+.popup-modal .close-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+}
+
+.gallery-title {
+  text-align: center;
+  font-size: 2rem;
+  margin: 40px 0 10px;
+  font-weight: bold;
+}
 /* Base styling */
 body {
-  font-family: 'Freight Display Pro', serif;
+  font-family: "Freight Display Pro", serif;
   background-color: #fff;
   margin: 0;
   padding: 0;
@@ -106,7 +236,7 @@ body {
   background-color: #f9f9f9;
 }
 .about h2 {
-  font-family: 'Freight Display Pro', serif;
+  font-family: "Freight Display Pro", serif;
   font-size: 2em;
 }
 .about p {
@@ -128,7 +258,7 @@ body {
 .admin-login-button {
   padding: 10px 20px;
   font-size: 1em;
-  font-family: 'Freight Display Pro', serif;
+  font-family: "Freight Display Pro", serif;
   background-color: #333;
   color: #fff;
   border: none;
@@ -175,7 +305,7 @@ body {
 .admin-login-modal-content h2 {
   margin: 0;
   margin-bottom: 15px;
-  font-family: 'Freight Display Pro', serif;
+  font-family: "Freight Display Pro", serif;
 }
 
 .admin-login-modal-content form {
@@ -207,7 +337,7 @@ body {
   color: #fff;
   text-align: center;
   padding: 20px;
-  font-family: 'Freight Display Pro', serif;
+  font-family: "Freight Display Pro", serif;
 }
 
 .social-icons {
@@ -263,7 +393,7 @@ body {
 }
 
 body {
-  font-family: 'Freight Display Pro', serif;
+  font-family: "Freight Display Pro", serif;
   background-color: #fff;
   margin: 0;
   padding: 0;
@@ -298,15 +428,15 @@ body {
 }
 
 .social-icons .instagram:hover {
-  color: #E4405F; /* Instagram color */
+  color: #e4405f; /* Instagram color */
 }
 
 .social-icons .twitter:hover {
-  color: #1DA1F2; /* Twitter color */
+  color: #1da1f2; /* Twitter color */
 }
 
 .social-icons .linkedin:hover {
-  color: #0077B5; /* LinkedIn color */
+  color: #0077b5; /* LinkedIn color */
 }
 
 /* Contact button styling */
@@ -331,7 +461,7 @@ body {
   text-align: center;
   margin-top: 120px;
   padding: 20px;
-  font-family: 'Freight Display Pro', serif;
+  font-family: "Freight Display Pro", serif;
 }
 
 .admin-dashboard h1 {
@@ -354,7 +484,7 @@ body {
 .admin-action-button {
   padding: 15px 30px;
   font-size: 1.2em;
-  font-family: 'Freight Display Pro', serif;
+  font-family: "Freight Display Pro", serif;
   background-color: #333;
   color: #fff;
   text-decoration: none;
@@ -376,24 +506,25 @@ table {
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
- 
-th, td {
+
+th,
+td {
   border: 1px solid #ccc; /* Soft light border */
   padding: 10px;
   text-align: center;
   line-height: 1.4;
 }
- 
+
 th {
   background-color: #dcdcdc; /* Soft gray header */
   color: #333;
   font-weight: bold;
 }
- 
+
 td {
   color: #333;
 }
- 
+
 /* Button Styling */
 button {
   padding: 8px 16px;
@@ -405,44 +536,46 @@ button {
   color: white;
   transition: background-color 0.3s ease;
 }
- 
+
 button:hover {
   background-color: #156b00; /* Darker green for hover */
 }
- 
+
 button:focus {
   outline: none;
 }
- 
+
 /* Responsive Styling */
 @media (max-width: 768px) {
   table {
     width: 100%;
   }
- 
-  th, td {
+
+  th,
+  td {
     font-size: 12px;
     padding: 8px;
   }
- 
+
   button {
     font-size: 12px;
     padding: 6px 12px;
   }
 }
- 
+
 @media (max-width: 480px) {
-  th, td {
+  th,
+  td {
     font-size: 10px;
     padding: 6px;
   }
- 
+
   button {
     font-size: 10px;
     padding: 4px 8px;
   }
 }
- 
+
 /* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
   .sponsor-card {
@@ -452,7 +585,7 @@ button:focus {
     grid-template-columns: 1fr 1fr;
   }
 }
- 
+
 @media screen and (max-width: 480px) {
   .sponsor-card {
     grid-template-columns: 1fr;
@@ -461,10 +594,9 @@ button:focus {
     grid-template-columns: 1fr;
   }
 }
- 
+
 /* TABLE CSS END*/
- 
- 
+
 /* Form Styling */
 .form-container {
   max-width: 700px;
@@ -474,18 +606,18 @@ button:focus {
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
- 
+
 .form-container h1 {
   text-align: center;
   color: #333;
 }
- 
+
 label {
   font-weight: bold;
   margin-top: 1rem;
   display: block;
 }
- 
+
 input[type="text"],
 input[type="email"],
 input[type="number"] {
