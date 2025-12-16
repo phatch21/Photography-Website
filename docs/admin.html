@@ -36,7 +36,7 @@
     </div>
     <!-- Popup Modal -->
     <div class="popup-modal" id="popupModal">
-      <div class="modal-content">
+      <div class="modal-content" onclick="event.stopPropagation()">
         <span class="close-icon" onclick="closePopup()">&#10005;</span>
         <a href="index.html" onclick="closePopup()">Home</a>
         <a href="gallery.html" onclick="closePopup()">Gallery</a>
@@ -51,6 +51,12 @@
       function closePopup() {
         document.getElementById("popupModal").style.display = "none";
       }
+      // Close nav popup when clicking outside modal-content
+      document
+        .getElementById("popupModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closePopup();
+        });
     </script>
   </body>
 </html>

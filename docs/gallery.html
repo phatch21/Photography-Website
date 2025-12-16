@@ -27,7 +27,7 @@
     </nav>
     <!-- Navigation Popup Modal -->
     <div class="popup-modal" id="navPopupModal">
-      <div class="modal-content">
+      <div class="modal-content" onclick="event.stopPropagation()">
         <span style="color: black" class="close-icon" onclick="closeNavPopup()"
           >&times;</span
         >
@@ -129,6 +129,12 @@
       function closeNavPopup() {
         document.getElementById("navPopupModal").style.display = "none";
       }
+      // Close nav popup when clicking outside modal-content
+      document
+        .getElementById("navPopupModal")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeNavPopup();
+        });
       // Open Photo Popup
       function openPhoto(imagePath) {
         const popupModal = document.getElementById("popupModal");
