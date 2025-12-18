@@ -40,6 +40,19 @@ body {
   background-color: #f4f4f4;
 }
 
+/* Prevent horizontal scrolling on mobile and ensure content bounces/stays within viewport */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; /* prevents sliding past the page edges */
+}
+
+/* Make sure images and media never exceed their containers */
+img, picture, video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
 /* Default navbar (white, for most pages) */
 .navbar {
   width: 100%;
