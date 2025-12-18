@@ -830,3 +830,6 @@ input[type="number"] {
     grid-template-columns: 1fr;
   }
 }
+.navbar.contact .hamburger-icon {
+  color: #fff;
+}
