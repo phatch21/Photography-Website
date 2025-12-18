@@ -1,3 +1,15 @@
+/* Contact Page Styles */
+.contact-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1.5rem;
+  font-family: "Freight Display Pro", serif;
+}
+
+@media (max-width: 600px) {
+  .contact-content h1 {
+    font-size: 1.0rem; /* smaller title on mobile */
+  }
+}
 @media (min-width: 425px) and (max-width: 600px) {
   .gallery-title {
     padding-top: 40px;
