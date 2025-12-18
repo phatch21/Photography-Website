@@ -734,3 +734,99 @@ input[type="number"] {
 .popup-image-wrapper .close-icon:hover {
   background: rgba(0, 0, 0, 0.8);
 }
+
+/* Masonry Gallery Styling */
+.gallery-masonry {
+  column-count: 4;
+  column-gap: 16px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+@media (max-width: 1200px) {
+  .gallery-masonry {
+    column-count: 3;
+  }
+}
+@media (max-width: 800px) {
+  .gallery-masonry {
+    column-count: 2;
+  }
+}
+@media (max-width: 500px) {
+  .gallery-masonry {
+    column-count: 1;
+  }
+}
+.gallery-masonry .photo-container {
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 16px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  box-sizing: border-box;
+}
+.gallery-masonry .photo-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+/* Grid Gallery Styling */
+.grid-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.grid-gallery .photo-container {
+  display: block;
+  width: 100%;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 4px;
+  box-sizing: border-box;
+}
+.grid-gallery .photo-container.landscape {
+  grid-column: span 2;
+}
+.grid-gallery .photo-container.portrait {
+  grid-column: span 1;
+}
+.grid-gallery .photo-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  object-fit: contain;
+}
+.grid-gallery .photo-container img.landscape {
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+}
+.grid-gallery .photo-container img:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+@media (max-width: 1200px) {
+  .grid-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+@media (max-width: 800px) {
+  .grid-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+}
+@media (max-width: 500px) {
+  .grid-gallery {
+    grid-template-columns: 1fr;
+  }
+}
