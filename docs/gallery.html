@@ -25,15 +25,13 @@
         </div>
       </div>
     </nav>
-    <!-- Navigation Popup Modal -->
-    <div class="popup-modal" id="navPopupModal">
-      <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-icon" style="color: #333" onclick="closeNavPopup()"
-          >&#10005;</span
-        >
-        <a href="index.html" onclick="closeNavPopup()">Home</a>
-        <a href="gallery.html" onclick="closeNavPopup()">Gallery</a>
-        <a href="admin.html" onclick="closeNavPopup()">Admin</a>
+    <!-- Popup Dropdown -->
+    <div class="popup-dropdown" id="popupDropdown">
+      <div class="dropdown-content">
+        <span class="close-icon" onclick="closePopup()">&#10005;</span>
+        <a href="index.html" onclick="closePopup()">Home</a>
+        <a href="gallery.html" onclick="closePopup()">Gallery</a>
+        <a href="admin.html" onclick="closePopup()">Admin</a>
       </div>
     </div>
     <div class="gallery-title">Photo Gallery</div>
@@ -123,18 +121,29 @@
     </footer>
     <script>
       // Navigation Popup functions
-      function openNavPopup() {
-        document.getElementById("navPopupModal").style.display = "flex";
+      // Popup Dropdown functions
+      function openNavPopup() { openPopup(); }
+      function closeNavPopup() { closePopup(); }
+      function openPopup() {
+        const dropdown = document.getElementById("popupDropdown");
+        const navMenu = document.querySelector(".nav-menu");
+        const rect = navMenu.getBoundingClientRect();
+        dropdown.style.display = "block";
+        dropdown.style.position = "absolute";
+        dropdown.style.top = rect.bottom + window.scrollY + "px";
+        dropdown.style.left = (rect.right - 180) + window.scrollX + "px"; // 180px = dropdown width
       }
-      function closeNavPopup() {
-        document.getElementById("navPopupModal").style.display = "none";
+      function closePopup() {
+        document.getElementById("popupDropdown").style.display = "none";
       }
-      // Close nav popup when clicking outside modal-content
-      document
-        .getElementById("navPopupModal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) closeNavPopup();
-        });
+      // Close dropdown when clicking outside
+      document.addEventListener("mousedown", function(e) {
+        const dropdown = document.getElementById("popupDropdown");
+        const navMenu = document.querySelector(".nav-menu");
+        if (dropdown.style.display === "block" && !dropdown.contains(e.target) && !navMenu.contains(e.target)) {
+          closePopup();
+        }
+      });
       // Open Photo Popup
       function openPhoto(imagePath) {
         const popupModal = document.getElementById("popupModal");
