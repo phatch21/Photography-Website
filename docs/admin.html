@@ -19,8 +19,8 @@
     <nav class="navbar">
       <div class="nav-content">
         <div class="nav-name">Corinne Hatch Photography</div>
-        <div class="nav-menu">
-          <span class="hamburger-icon" onclick="openPopup()">&#9776;</span>
+        <div class="nav-menu" onclick="openPopup()">
+          <span class="hamburger-icon">&#9776;</span>
         </div>
       </div>
     </nav>
@@ -37,7 +37,9 @@
     <!-- Popup Modal -->
     <div class="popup-modal" id="popupModal">
       <div class="modal-content" onclick="event.stopPropagation()">
-        <span class="close-icon" style="color: #333;" onclick="closePopup()">&#10005;</span>
+        <span class="close-icon" style="color: #333" onclick="closePopup()"
+          >&#10005;</span
+        >
         <a href="index.html" onclick="closePopup()">Home</a>
         <a href="gallery.html" onclick="closePopup()">Gallery</a>
         <a href="admin.html" onclick="closePopup()">Admin</a>
