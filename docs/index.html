@@ -80,72 +80,92 @@
         </div>
       </div>
     </nav>
-  <!-- Popup Dropdown -->
-  <div class="popup-dropdown" id="popupDropdown">
-    <div class="dropdown-content">
-      <span class="close-icon" onclick="closePopup()">&#10005;</span>
-      <a href="index.html" onclick="closePopup()">Home</a>
-      <a href="gallery.html" onclick="closePopup()">Gallery</a>
-      <a href="admin.html" onclick="closePopup()">Admin</a>
+    <!-- Popup Dropdown -->
+    <div class="popup-dropdown" id="popupDropdown">
+      <div class="dropdown-content">
+        <span class="close-icon" onclick="closePopup()">&#10005;</span>
+        <a href="index.html" onclick="closePopup()">Home</a>
+        <a href="gallery.html" onclick="closePopup()">Gallery</a>
+        <a href="admin.html" onclick="closePopup()">Admin</a>
+      </div>
     </div>
-  </div>
-  <!-- Banner Section -->
-  <div class="banner" onclick="nextSlide()">
-    <img id="bannerImage" src="temple.jpeg" alt="Photography Banner">
-  </div>
-  <!-- About Section -->
-  <section class="about">
-    <h2>About Me</h2>
-    <p>Welcome! I'm Corinne Hatch, a passionate photographer looking to hone her skills. Here, you'll find my favorite captures that highlight the beauty I see through the lens. </p>
-  </section>
-  <br><br>
-  <footer class="footer">
-    <div class="footer-content">
-      <div class="social-icons">
-        <a href="https://www.instagram.com/_corinne.hatch_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="icon instagram">
-          <i class="fab fa-instagram"></i>
-        </a>
-        <!-- <a href="https://www.twitter.com" target="_blank" class="icon twitter">
+    <!-- Banner Section -->
+    <div class="banner" onclick="nextSlide()">
+      <img id="bannerImage" src="temple.jpeg" alt="Photography Banner" />
+    </div>
+    <!-- About Section -->
+    <section class="about">
+      <h2>About Me</h2>
+      <p>
+        Welcome! I'm Corinne Hatch, a passionate photographer looking to hone
+        her skills. Here, you'll find my favorite captures that highlight the
+        beauty I see through the lens.
+      </p>
+    </section>
+    <br /><br />
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="social-icons">
+          <a
+            href="https://www.instagram.com/_corinne.hatch_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+            target="_blank"
+            class="icon instagram"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
+          <!-- <a href="https://www.twitter.com" target="_blank" class="icon twitter">
           <i class="fab fa-twitter"></i>
         </a>
         <a href="https://www.linkedin.com" target="_blank" class="icon linkedin">
           <i class="fab fa-linkedin"></i>
         </a> -->
+        </div>
+        <p>&copy; 2024 Corinne Photography. All Rights Reserved.</p>
       </div>
-      <p>&copy; 2024 Corinne Photography. All Rights Reserved.</p>
-    </div>
-  </footer>
-  <script>
-    // Popup Dropdown functions
-    function openPopup() {
-      const dropdown = document.getElementById("popupDropdown");
-      const navMenu = document.querySelector(".nav-menu");
-      const rect = navMenu.getBoundingClientRect();
-      dropdown.style.display = "block";
-      dropdown.style.position = "absolute";
-      dropdown.style.top = rect.bottom + window.scrollY + "px";
-      dropdown.style.left = (rect.right - 180) + window.scrollX + "px"; // 180px = dropdown width
-    }
-    function closePopup() {
-      document.getElementById("popupDropdown").style.display = "none";
-    }
-    // Close dropdown when clicking outside
-    document.addEventListener("mousedown", function(e) {
-      const dropdown = document.getElementById("popupDropdown");
-      const navMenu = document.querySelector(".nav-menu");
-      if (dropdown.style.display === "block" && !dropdown.contains(e.target) && !navMenu.contains(e.target)) {
-        closePopup();
+    </footer>
+    <script>
+      // Popup Dropdown functions
+      function openPopup() {
+        const dropdown = document.getElementById("popupDropdown");
+        const navMenu = document.querySelector(".nav-menu");
+        const rect = navMenu.getBoundingClientRect();
+        dropdown.style.display = "block";
+        dropdown.style.position = "absolute";
+        dropdown.style.top = rect.bottom + window.scrollY + "px";
+        dropdown.style.left = rect.right - 180 + window.scrollX + "px"; // 180px = dropdown width
       }
-    });
-    // Banner Slideshow
-    let currentSlide = 0;
-    const images = ["temple.jpeg", "snail.jpeg", "smile.jpeg", "eye.jpeg", "mountain.jpeg"];
-    function nextSlide() {
-      currentSlide = (currentSlide + 1) % images.length;
-      document.getElementById("bannerImage").src = images[currentSlide];
-    }
-    function FirstImage(){
-      document.getElementById("bannerImage").src = images[0];
-    }
-    setInterval(nextSlide, 3000); // Change image every 3 seconds
-  </script>
+      function closePopup() {
+        document.getElementById("popupDropdown").style.display = "none";
+      }
+      // Close dropdown when clicking outside
+      document.addEventListener("mousedown", function (e) {
+        const dropdown = document.getElementById("popupDropdown");
+        const navMenu = document.querySelector(".nav-menu");
+        if (
+          dropdown.style.display === "block" &&
+          !dropdown.contains(e.target) &&
+          !navMenu.contains(e.target)
+        ) {
+          closePopup();
+        }
+      });
+      // Banner Slideshow
+      let currentSlide = 0;
+      const images = [
+        "temple.jpeg",
+        "snail.jpeg",
+        "smile.jpeg",
+        "eye.jpeg",
+        "mountain.jpeg",
+      ];
+      function nextSlide() {
+        currentSlide = (currentSlide + 1) % images.length;
+        document.getElementById("bannerImage").src = images[currentSlide];
+      }
+      function FirstImage() {
+        document.getElementById("bannerImage").src = images[0];
+      }
+      setInterval(nextSlide, 3000); // Change image every 3 seconds
+    </script>
+  </body>
+</html>

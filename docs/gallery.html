@@ -122,8 +122,12 @@
     <script>
       // Navigation Popup functions
       // Popup Dropdown functions
-      function openNavPopup() { openPopup(); }
-      function closeNavPopup() { closePopup(); }
+      function openNavPopup() {
+        openPopup();
+      }
+      function closeNavPopup() {
+        closePopup();
+      }
       function openPopup() {
         const dropdown = document.getElementById("popupDropdown");
         const navMenu = document.querySelector(".nav-menu");
@@ -131,16 +135,20 @@
         dropdown.style.display = "block";
         dropdown.style.position = "absolute";
         dropdown.style.top = rect.bottom + window.scrollY + "px";
-        dropdown.style.left = (rect.right - 180) + window.scrollX + "px"; // 180px = dropdown width
+        dropdown.style.left = rect.right - 180 + window.scrollX + "px"; // 180px = dropdown width
       }
       function closePopup() {
         document.getElementById("popupDropdown").style.display = "none";
       }
       // Close dropdown when clicking outside
-      document.addEventListener("mousedown", function(e) {
+      document.addEventListener("mousedown", function (e) {
         const dropdown = document.getElementById("popupDropdown");
         const navMenu = document.querySelector(".nav-menu");
-        if (dropdown.style.display === "block" && !dropdown.contains(e.target) && !navMenu.contains(e.target)) {
+        if (
+          dropdown.style.display === "block" &&
+          !dropdown.contains(e.target) &&
+          !navMenu.contains(e.target)
+        ) {
           closePopup();
         }
       });
