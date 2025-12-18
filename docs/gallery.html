@@ -96,7 +96,7 @@
     </section>
     <!-- Image Popup Modal -->
     <div class="popup-modal" id="popupModal">
-      <span class="close-icon" onclick="closePopup()">&times;</span>
+      <span class="close-icon" onclick="closeImagePopup()">&times;</span>
       <img id="popupImage" src="" alt="Expanded Image" />
     </div>
     <footer class="footer" style="margin-top: auto">
@@ -159,8 +159,8 @@
         popupModal.style.display = "flex";
         popupImage.src = imagePath;
       }
-      // Close Popup
-      function closePopup() {
+      // Close only the image popup
+      function closeImagePopup() {
         document.getElementById("popupModal").style.display = "none";
       }
       // Add click event to all images
